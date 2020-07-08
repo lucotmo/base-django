@@ -15,13 +15,17 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, re_path
-from app import views
+from app.views import home, plus, minus, categoria, add, EnlaceListView, EnlaceDetailView
+from django.views.generic import TemplateView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.home, name='home'),
-    re_path(r'^plus/(\d+)$', views.plus, name='plus'),
-    re_path(r'^minus/(\d+)$', views.minus, name='minus'),
-    re_path(r'^categoria/(\d+)$', views.categoria, name='categoria'),
-    re_path(r'^add/', views.add, name='add'),
+    path('', home, name='home'),
+    re_path(r'^plus/(\d+)$', plus, name='plus'),
+    re_path(r'^minus/(\d+)$', minus, name='minus'),
+    re_path(r'^categoria/(\d+)$', categoria, name='categoria'),
+    re_path(r'^add/', add, name='add'),
+    re_path(r'^about/', TemplateView.as_view(template_name="app/index.html"), name='about'),
+    re_path(r'^enlaces/', EnlaceListView.as_view() , name='enlaces'),
+    re_path(r'^enlaces/(?P<pk>[\d]+)$', EnlaceDetailView.as_view() , name='enlace'),
 ]

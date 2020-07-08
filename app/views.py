@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from datetime import datetime
 from .models import Categoria, Enlace
-from .forms import *
+from .forms import EnlaceForm
 from django.contrib.auth.decorators import login_required
 
 def home(request):
@@ -44,6 +44,19 @@ def add(request):
     form = EnlaceForm()
 
   return render(request, 'app/form.html', locals())
+
+from django.views.generic import ListView, DetailView
+
+class EnlaceListView(ListView):
+  model = Enlace
+  context_object_name = 'enlaces'
+  def get_template_names(self):
+    return 'app/index.html'
+
+class EnlaceDetailView(DetailView):
+  model = Enlace
+  def get_template_names(self):
+    return 'app/index.html'
 
 def hora_actual(request):
   ahora = datetime.now()
