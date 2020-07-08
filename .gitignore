@@ -1,0 +1,9 @@
+*.log
+*.pot
+*.pyc
+env/
+app/__pycache__
+app/migrations/__pycache__
+0001_initial.py
+proyecto/__pycache__
+db.sqlite3
