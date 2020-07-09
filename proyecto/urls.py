@@ -14,18 +14,28 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, re_path
+from django.urls import path, re_path, include
 from app.views import home, plus, minus, categoria, add, EnlaceListView, EnlaceDetailView
 from django.views.generic import TemplateView
 
+from rest_framework import routers
+from app.views import EnlaceViewSet, UserViewSet
+
+router = routers.DefaultRouter()
+router.register(r'links', EnlaceViewSet)
+router.register(r'user', UserViewSet)
+
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', home, name='home'),
-    re_path(r'^plus/(\d+)$', plus, name='plus'),
-    re_path(r'^minus/(\d+)$', minus, name='minus'),
-    re_path(r'^categoria/(\d+)$', categoria, name='categoria'),
-    re_path(r'^add/', add, name='add'),
-    re_path(r'^about/', TemplateView.as_view(template_name="app/index.html"), name='about'),
-    re_path(r'^enlaces/', EnlaceListView.as_view() , name='enlaces'),
-    re_path(r'^enlaces/(?P<pk>[\d]+)$', EnlaceDetailView.as_view() , name='enlace'),
+  re_path(r'^api/', include(router.urls)),
+  path('admin/', admin.site.urls),
+  path('', home, name='home'),
+  re_path(r'^plus/(\d+)$', plus, name='plus'),
+  re_path(r'^minus/(\d+)$', minus, name='minus'),
+  re_path(r'^categoria/(\d+)$', categoria, name='categoria'),
+  re_path(r'^add/', add, name='add'),
+  re_path(r'^about/', TemplateView.as_view(template_name="app/index.html"), name='about'),
+  re_path(r'^enlaces/', EnlaceListView.as_view() , name='enlaces'),
+  re_path(r'^enlaces/(?P<pk>[\d]+)$', EnlaceDetailView.as_view() , name='enlace'),
+
+  re_path(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 ]
